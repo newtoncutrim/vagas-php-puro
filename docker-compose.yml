@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  webserver:
+    build: .
+    ports:
+      - '80:80'
+    volumes:
+      - ./htdocs:/var/www/html
+      - ./apache.conf:/etc/apache2/sites-available/000-default.conf
+      - ./php.ini:/etc/php/8.0/apache2/php.ini
+    links:
+      - db
+  db:
+    image: mariadb:10.3
+    volumes:
+      - ./database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=toor
+      - MYSQL_DATABASE=mydb
+    ports:
+      - 3306:3306
